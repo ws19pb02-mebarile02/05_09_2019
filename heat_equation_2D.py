@@ -104,26 +104,18 @@ uvec = L*M*[0]
 for i in range(0,L*M,M):
     uvec[i] = 20
 
-
-
+    
 A = np.array(A)
 uvec = np.array(uvec)
-grid = np.array(grid)
+
 
 nt = 2000
 for i in range(nt):   # change this argument to adjust time steps
     unew = A.dot(uvec)
     uvec = unew
 
-xgrid = []
-ygrid = []
-for i in range(len(grid)):
-    xgrid.append(grid[i][0])
-    ygrid.append(grid[i][1])
-
-xgrid = np.array(xgrid)
-ygrid = np.array(ygrid)
-
+xgrid = np.array([grid[i][0] for i in range(len(grid))])
+ygrid = np.array([grid[i][1] for i in range(len(grid))])
 
 """
 I got info on 3D scatter plot from:
