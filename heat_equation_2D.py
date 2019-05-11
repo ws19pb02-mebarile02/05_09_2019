@@ -1,10 +1,9 @@
 """
 heat_equation_2D.py
 
-This is the first version of a file that solves the 2D heat equation.
-It was copied almost exactly from my Mathematica program and is inefficient.
-The next step is to make the code more efficient using list comprehensions and
-consolidating some of the loops to eliminate unnecessary computations.
+Second version.  Consolidated code with list comprehensions and n*[0] feature
+feature of Python to generate a list of length n with all zero values.
+Construction of A matrix needs to be worked on.
 
 The rectangle in the plane has vertices at (0,0), (100,0), (100,200) and
 (0,200). The initial condition has 20 degrees along the x-axis from 0 to 100
@@ -58,31 +57,23 @@ deltat = 1./100  # size of time steps
 lamb1 = alpha*deltat/(deltax*deltax)
 lamb2 = alpha*deltat/(deltay*deltay)
 
-xvec = []   #x-coordinates
-for i in range(1, L+1):
-    xvec.append((i-1)*deltax)
+xvec = [round(deltax*i, 2) for i in range(L)] # x-coordinates
+yvec = [round(deltay*i, 2) for i in range(M)] # y-coordinates
 
-yvec = []    #y-coordinates
-for i in range(1, M+1):
-    yvec.append((i-1)*deltay)
+#grid of points in plane
+grid = [[xvec[i],yvec[j]] for i in range(len(xvec)) for j in range(len(yvec))]
 
-grid = []   #grid of points in plane
-for i in range(len(xvec)):
-    for j in range(len(yvec)):
-        grid.append([xvec[i],yvec[j]])
+"""
+note 1-2*(lamb1 + lamb2) evaluates to zero in this case,
+but keep code anyway
+"""
 
-
-linCombRow = []
-
-for i in range(1, L*M+1):
-    if i == 2 or i == 2*M + 2:
-        linCombRow.append(lamb1)
-    elif i == M + 1 or i == M + 3:
-        linCombRow.append(lamb2)
-    elif i == M + 2:
-        linCombRow.append(1-2*(lamb1 + lamb2))
-    else:
-        linCombRow.append(0)
+linCombRow = L*M*[0]
+linCombRow[1] = lamb1
+linCombRow[2*M + 1] = lamb1
+linCombRow[M] = lamb2
+linCombRow[M+2] = lamb2
+linCombRow[M+1] = 1-2*(lamb1 + lamb2)
 
        
 A = []   # calculating A matrix
@@ -108,13 +99,10 @@ for i in range(1, L*M + 1):
     irow = []
 
 
-uvec = []  # initial state vector
-
-for i in range(1, L*M + 1):
-    if i % M == 1:
-        uvec.append(20.)
-    else:
-        uvec.append(0)
+# initial state vector
+uvec = L*M*[0]
+for i in range(0,L*M,M):
+    uvec[i] = 20
 
 
 
@@ -122,7 +110,8 @@ A = np.array(A)
 uvec = np.array(uvec)
 grid = np.array(grid)
 
-for i in range(2000):   # change this argument to adjust time steps
+nt = 2000
+for i in range(nt):   # change this argument to adjust time steps
     unew = A.dot(uvec)
     uvec = unew
 
