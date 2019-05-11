@@ -1,9 +1,7 @@
 """
 heat_equation_2D.py
 
-Second version.  Consolidated code with list comprehensions and n*[0] feature
-feature of Python to generate a list of length n with all zero values.
-Construction of A matrix needs to be worked on.
+
 
 The rectangle in the plane has vertices at (0,0), (100,0), (100,200) and
 (0,200). The initial condition has 20 degrees along the x-axis from 0 to 100
@@ -77,8 +75,9 @@ linCombRow[M+1] = 1-2*(lamb1 + lamb2)
 
        
 A = []   # calculating A matrix
-irow = []
+
 for i in range(1, L*M + 1):
+    irow = []
     if i <= M+1 or i > L*M - (M-1):
         for j in range(1, L*M + 1):
             if j == i:
@@ -96,7 +95,7 @@ for i in range(1, L*M + 1):
         else:
             irow = rightRotate(linCombRow, i-(M+2))
     A.append(irow)
-    irow = []
+    
 
 
 # initial state vector
