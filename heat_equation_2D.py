@@ -19,25 +19,10 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-
-"""
-I copied the rightRotate code from the following location:
-https://www.geeksforgeeks.org/python-program-right-rotate-list-n/
-"""
-
-def rightRotate(lists, num): 
-    output_list = [] 
-      
-    # Will add values from n to the new list 
-    for item in range(len(lists) - num, len(lists)): 
-        output_list.append(lists[item]) 
-      
-    # Will add the values before 
-    # n to the end of new list     
-    for item in range(0, len(lists) - num):  
-        output_list.append(lists[item]) 
-          
-    return output_list
+def rightRotate(lists, num):
+    "Cut the deck."
+    n = len(lists) - num
+    return lists[n:] + lists[:n]
 
 L = 101 # number of x-coordinates
 M = 101 # number of y-coordinates
