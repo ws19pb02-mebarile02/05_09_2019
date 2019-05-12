@@ -76,13 +76,7 @@ uvec = L*M*[0]
 for i in range(0,L*M,M):
     uvec[i] = 20
     
-    
-# initial state vector
-uvec = L*M*[0]
-for i in range(0,L*M,M):
-    uvec[i] = 20
-
-    
+ 
 A = np.array(A)
 uvec = np.array(uvec)
 
