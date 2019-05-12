@@ -61,28 +61,22 @@ linCombRow[M+1] = 1-2*(lamb1 + lamb2)
        
 A = []   # calculating A matrix
 
-for i in range(1, L*M + 1):
-    irow = []
-    if i <= M+1 or i > L*M - (M-1):
-        for j in range(1, L*M + 1):
-            if j == i:
-                irow.append(1)
-            else:
-                irow.append(0)
+for i in range(L*M):
+    if i > M - 1 and i <= L*M - M-1 and (i + 1) % M >= 2:
+        irow = rightRotate(linCombRow, i - (M+1))
     else:
-        if i%M == 0 or i%M == 1:
-            for h in range(1, L*M + 1):
-                if h == i:
-                    irow.append(1)
-                else:
-                    irow.append(0)
-    
-        else:
-            irow = rightRotate(linCombRow, i-(M+2))
+        irow = [0] * (L * M)
+        irow[i] = 1
+
     A.append(irow)
     
 
-
+# initial state vector
+uvec = L*M*[0]
+for i in range(0,L*M,M):
+    uvec[i] = 20
+    
+    
 # initial state vector
 uvec = L*M*[0]
 for i in range(0,L*M,M):
@@ -92,11 +86,9 @@ for i in range(0,L*M,M):
 A = np.array(A)
 uvec = np.array(uvec)
 
-
 nt = 2000
 for i in range(nt):   # change this argument to adjust time steps
-    unew = A.dot(uvec)
-    uvec = unew
+    uvec = A.dot(uvec)
 
 xgrid = np.array([grid[i][0] for i in range(len(grid))])
 ygrid = np.array([grid[i][1] for i in range(len(grid))])
